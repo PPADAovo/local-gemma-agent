@@ -1,0 +1,104 @@
+[
+  {
+    "name": "google-drive:google-docs",
+    "description": "Create and edit native Google Docs through connected tools.",
+    "path": "C:\\Users\\User\\.codex\\plugins\\cache\\openai-curated-remote\\google-drive\\0.1.23\\skills\\google-docs\\SKILL.md",
+    "pluginId": "google-drive@openai-curated-remote"
+  },
+  {
+    "name": "google-drive:google-drive",
+    "description": "Use this skill to find and manage files in Google Drive, including organizing files, managing sharing, exporting files, and checking revision history. When a request also involves editing a file's contents, use the corresponding Docs, Sheets, or Slides skill in this plugin.",
+    "path": "C:\\Users\\User\\.codex\\plugins\\cache\\openai-curated-remote\\google-drive\\0.1.23\\skills\\google-drive\\SKILL.md",
+    "pluginId": "google-drive@openai-curated-remote"
+  },
+  {
+    "name": "google-drive:google-drive-comments",
+    "description": "Write, reply to, and resolve Google Drive comments on Docs, Sheets, Slides, and Drive files with evidence-backed location context. Use when the user asks to leave comments, review a file with comments, respond to comment threads, or resolve Drive comments.",
+    "path": "C:\\Users\\User\\.codex\\plugins\\cache\\openai-curated-remote\\google-drive\\0.1.23\\skills\\google-drive-comments\\SKILL.md",
+    "pluginId": "google-drive@openai-curated-remote"
+  },
+  {
+    "name": "google-drive:google-sheets",
+    "description": "Analyze and edit connected Google Sheets with range precision. Use when the user wants to create Google Sheets, find a spreadsheet, inspect tabs or ranges, search rows, plan formulas, create or repair charts, clean or restructure tables, write concise summaries, or make explicit cell-range updates.",
+    "path": "C:\\Users\\User\\.codex\\plugins\\cache\\openai-curated-remote\\google-drive\\0.1.23\\skills\\google-sheets\\SKILL.md",
+    "pluginId": "google-drive@openai-curated-remote"
+  },
+  {
+    "name": "google-drive:google-slides",
+    "description": "Route Google Slides authoring requests and derive a design system from a native template or reference deck. Use this skill when the user provides an existing native Google Slides deck as a template, reference, or prior-period source, or asks to edit, update, repair, restyle, or clean up an existing native Google Slides deck. Use the Presentations skill instead for net-new presentation creation when no existing native Google Slides deck must be followed.",
+    "path": "C:\\Users\\User\\.codex\\plugins\\cache\\openai-curated-remote\\google-drive\\0.1.23\\skills\\google-slides\\SKILL.md",
+    "pluginId": "google-drive@openai-curated-remote"
+  },
+  {
+    "name": "notion:notion-build-my-engineering-wiki",
+    "description": "Build a personalized Notion engineering home from technical docs, project context, and chat or connected sources. Use to get started with an engineering wiki and a clear view of current work.",
+    "path": "C:\\Users\\User\\.codex\\plugins\\cache\\openai-curated-remote\\notion\\3.0.9\\skills\\notion-build-my-engineering-wiki\\SKILL.md",
+    "pluginId": "notion@openai-curated-remote"
+  },
+  {
+    "name": "notion:notion-create-my-team-handbook",
+    "description": "Create a team handbook in Notion from scattered processes, team documents, requests, and chat context. Make procedures easy to find, show who maintains them, and track related requests.",
+    "path": "C:\\Users\\User\\.codex\\plugins\\cache\\openai-curated-remote\\notion\\3.0.9\\skills\\notion-create-my-team-handbook\\SKILL.md",
+    "pluginId": "notion@openai-curated-remote"
+  },
+  {
+    "name": "notion:notion-database-designer",
+    "description": "Turns scattered notes and recurring work into useful Notion trackers for requests, content plans, or team work. Use to set up or improve a tracker, choosing its fields and views from the user's needs; ordinary record updates belong to the task's workflow.",
+    "path": "C:\\Users\\User\\.codex\\plugins\\cache\\openai-curated-remote\\notion\\3.0.9\\skills\\notion-database-designer\\SKILL.md",
+    "pluginId": "notion@openai-curated-remote"
+  },
+  {
+    "name": "notion:notion-knowledge-capture",
+    "description": "Captures conversations and supplied notes as Notion wiki pages, how-to guides, FAQs, decision records, or retrospectives. Use when saving or updating durable knowledge from existing context; use research-documentation when new source discovery and synthesis is the main task.",
+    "path": "C:\\Users\\User\\.codex\\plugins\\cache\\openai-curated-remote\\notion\\3.0.9\\skills\\notion-knowledge-capture\\SKILL.md",
+    "pluginId": "notion@openai-curated-remote"
+  },
+  {
+    "name": "notion:notion-meeting-prep",
+    "description": "Prepares meeting agendas, internal pre-reads, and decision briefs using Notion context and relevant research. Use for preparing the next or upcoming meeting, meeting preparation, recurring meeting context, or updating meeting outcomes; use knowledge-capture for a standalone record of an existing discussion.",
+    "path": "C:\\Users\\User\\.codex\\plugins\\cache\\openai-curated-remote\\notion\\3.0.9\\skills\\notion-meeting-prep\\SKILL.md",
+    "pluginId": "notion@openai-curated-remote"
+  },
+  {
+    "name": "notion:notion-organize-my-semester",
+    "description": "Organize a semester in Notion from course notes, syllabi, assignments, and chat context. Use when getting organized for a course or semester to keep notes clear and upcoming work easy to find.",
+    "path": "C:\\Users\\User\\.codex\\plugins\\cache\\openai-curated-remote\\notion\\3.0.9\\skills\\notion-organize-my-semester\\SKILL.md",
+    "pluginId": "notion@openai-curated-remote"
+  },
+  {
+    "name": "notion:notion-plan-marketing-campaigns",
+    "description": "Organize campaign briefs, content ideas, and production work in Notion. Use when planning a marketing campaign, building a content calendar, or tracking content production.",
+    "path": "C:\\Users\\User\\.codex\\plugins\\cache\\openai-curated-remote\\notion\\3.0.9\\skills\\notion-plan-marketing-campaigns\\SKILL.md",
+    "pluginId": "notion@openai-curated-remote"
+  },
+  {
+    "name": "notion:notion-research-documentation",
+    "description": "Researches questions across Notion sources and synthesizes cited briefs, comparisons, or reports. Use when answering requires discovering and reconciling workspace information, optionally with external research, and returning or saving the findings.",
+    "path": "C:\\Users\\User\\.codex\\plugins\\cache\\openai-curated-remote\\notion\\3.0.9\\skills\\notion-research-documentation\\SKILL.md",
+    "pluginId": "notion@openai-curated-remote"
+  },
+  {
+    "name": "notion:notion-set-up-my-project",
+    "description": "Create a useful initial Notion project home with tasks, docs, and meeting notes, then work with the user to confirm the team and choose a Projects database. Use when starting or organizing a project in Notion; routine task edits, status reports, and implementing a technical spec are separate workflows.",
+    "path": "C:\\Users\\User\\.codex\\plugins\\cache\\openai-curated-remote\\notion\\3.0.9\\skills\\notion-set-up-my-project\\SKILL.md",
+    "pluginId": "notion@openai-curated-remote"
+  },
+  {
+    "name": "notion:notion-setup",
+    "description": "Set up Notion so your agents can remember your preferences, find your work, and pick up where you left off.",
+    "path": "C:\\Users\\User\\.codex\\plugins\\cache\\openai-curated-remote\\notion\\3.0.9\\skills\\notion-setup\\SKILL.md",
+    "pluginId": "notion@openai-curated-remote"
+  },
+  {
+    "name": "notion:notion-spec-to-implementation",
+    "description": "Converts Notion product or technical specs into implementation plans, linked tasks, and evidence-based progress updates. Use for planning or implementing a spec, creating tasks from requirements, or reconciling implementation with spec changes.",
+    "path": "C:\\Users\\User\\.codex\\plugins\\cache\\openai-curated-remote\\notion\\3.0.9\\skills\\notion-spec-to-implementation\\SKILL.md",
+    "pluginId": "notion@openai-curated-remote"
+  },
+  {
+    "name": "notion:notion-weekly-project-digest",
+    "description": "Produces evidence-based weekly project or team updates by comparing reporting periods, tasks, decisions, and blockers in Notion. Use for recurring status digests; use spec-to-implementation for requirement-level implementation tracking.",
+    "path": "C:\\Users\\User\\.codex\\plugins\\cache\\openai-curated-remote\\notion\\3.0.9\\skills\\notion-weekly-project-digest\\SKILL.md",
+    "pluginId": "notion@openai-curated-remote"
+  }
+]

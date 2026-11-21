@@ -1,0 +1,268 @@
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework" Title="로컬 Gemma" Width="1322" Height="946" MinWidth="690" MinHeight="470" Background="#EEF3F8" Foreground="#222427" FontFamily="Segoe UI Variable Text, Noto Sans KR, Malgun Gothic" FontSize="14" UseLayoutRounding="True" TextOptions.TextFormattingMode="Ideal" TextOptions.TextRenderingMode="ClearType" RenderOptions.ClearTypeHint="Enabled" TextOptions.TextHintingMode="Fixed" WindowStartupLocation="CenterScreen">
+<shell:WindowChrome.WindowChrome><shell:WindowChrome CaptionHeight="38" ResizeBorderThickness="6" GlassFrameThickness="0" UseAeroCaptionButtons="False"/></shell:WindowChrome.WindowChrome>
+<Window.Resources><ControlTemplate x:Key="PluginPlugIcon" TargetType="ContentControl">
+  <Viewbox Width="18" Height="18"><Canvas Width="26" Height="26">
+    <Canvas.RenderTransform><RotateTransform Angle="-30" CenterX="13" CenterY="13"/></Canvas.RenderTransform>
+    <Path Stroke="{TemplateBinding Foreground}" StrokeThickness="1.8" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Data="M13,17.4 C13,19.5 12.3,21.6 13.3,22.9 C13.8,23.55 14.35,23.9 15,23.8 A11,11 0 1 0 8.5,23"/>
+    <Path Stroke="{TemplateBinding Foreground}" StrokeThickness="1.7" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Data="M10.6,10.7 V7.4 M15.4,10.7 V7.4"/>
+    <Path Stroke="{TemplateBinding Foreground}" StrokeThickness="1.65" StrokeLineJoin="Round" Data="M8.4,10.7 H17.6 V12.8 A4.6,4.6 0 0 1 8.4,12.8 Z"/>
+  </Canvas></Viewbox>
+</ControlTemplate>
+<ControlTemplate x:Key="ActivityTemplate" TargetType="Expander">
+  <StackPanel>
+    <Border BorderBrush="#E7E7E7" BorderThickness="0,0,0,1" Padding="0,0,0,7">
+      <ToggleButton x:Name="HeaderSite" Content="{TemplateBinding Header}" Foreground="{TemplateBinding Foreground}"
+                    IsChecked="{Binding IsExpanded,RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}"
+                    HorizontalContentAlignment="Left" Cursor="Hand">
+        <ToggleButton.Template>
+          <ControlTemplate TargetType="ToggleButton">
+            <Border Background="Transparent" Padding="1,3">
+              <DockPanel LastChildFill="True">
+                <Path DockPanel.Dock="Right" x:Name="Chevron" Width="10" Height="10" Data="M3,1 L7,5 L3,9" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Stroke="#959595" StrokeThickness="1.2" Margin="8,0,2,0" VerticalAlignment="Center" RenderTransformOrigin=".5,.5"/>
+                <TextBlock Text="{TemplateBinding Content}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+              </DockPanel>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsChecked" Value="True"><Setter TargetName="Chevron" Property="RenderTransform"><Setter.Value><RotateTransform Angle="90"/></Setter.Value></Setter></Trigger>
+              <Trigger Property="IsMouseOver" Value="True"><Setter Property="Foreground" Value="#333333"/></Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </ToggleButton.Template>
+      </ToggleButton>
+    </Border>
+    <ContentPresenter x:Name="ExpandSite" ContentSource="Content" Visibility="Collapsed"/>
+  </StackPanel>
+  <ControlTemplate.Triggers>
+    <Trigger Property="IsExpanded" Value="True"><Setter TargetName="ExpandSite" Property="Visibility" Value="Visible"/></Trigger>
+  </ControlTemplate.Triggers>
+</ControlTemplate>
+<Style TargetType="Button"><Setter Property="Background" Value="Transparent"/><Setter Property="Foreground" Value="#282B30"/><Setter Property="Padding" Value="8,5"/><Setter Property="Cursor" Value="Hand"/><Setter Property="ToolTipService.ShowOnDisabled" Value="True"/><Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button"><Border x:Name="B" Background="{TemplateBinding Background}" CornerRadius="9" Padding="{TemplateBinding Padding}"><ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="Center"/></Border><ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="B" Property="Background" Value="#E0E5E9"/></Trigger><Trigger Property="IsPressed" Value="True"><Setter TargetName="B" Property="Background" Value="#CDD5DA"/></Trigger><Trigger Property="IsEnabled" Value="False"><Setter TargetName="B" Property="Opacity" Value=".38"/><Setter Property="Cursor" Value="Arrow"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter></Style>
+<Style x:Key="LocalReplyAction" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+  <Style.Triggers><DataTrigger Binding="{Binding Content,ElementName=Model}" Value="Gemini"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers>
+</Style>
+<Style x:Key="Icon" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Setter Property="FontFamily" Value="Segoe MDL2 Assets"/><Setter Property="FontSize" Value="15"/><Setter Property="Width" Value="34"/><Setter Property="Height" Value="34"/></Style>
+<Style x:Key="TurnMarkButton" TargetType="Button">
+  <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button">
+    <Border Background="Transparent" Padding="{TemplateBinding Padding}"><ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/></Border>
+  </ControlTemplate></Setter.Value></Setter>
+</Style>
+<Style x:Key="RailTip" TargetType="ToolTip">
+  <Setter Property="OverridesDefaultStyle" Value="True"/>
+  <Setter Property="FontFamily" Value="Segoe UI, Malgun Gothic"/>
+  <Setter Property="FontWeight" Value="SemiBold"/>
+  <Setter Property="FontSize" Value="12"/>
+  <Setter Property="Foreground" Value="White"/>
+  <Setter Property="HasDropShadow" Value="False"/>
+  <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ToolTip">
+    <Border Background="#191A1B" CornerRadius="12" Padding="12,0" Height="30"><ContentPresenter VerticalAlignment="Center"/></Border>
+  </ControlTemplate></Setter.Value></Setter>
+</Style><Style x:Key="NavIcon" TargetType="Button" BasedOn="{StaticResource Icon}"><Setter Property="ToolTipService.InitialShowDelay" Value="100"/><Setter Property="ToolTipService.Placement" Value="Right"/><Setter Property="ToolTipService.HorizontalOffset" Value="2"/><Setter Property="ToolTipService.VerticalOffset" Value="3"/><Setter Property="Width" Value="36"/><Setter Property="Height" Value="36"/><Setter Property="Margin" Value="0,0,0,8"/><Setter Property="FontSize" Value="16"/><Setter Property="Foreground" Value="#545B60"/><Style.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter Property="Background" Value="#E3EAEE"/><Setter Property="Foreground" Value="#242629"/></Trigger><Trigger Property="IsKeyboardFocused" Value="True"><Setter Property="Background" Value="#DAE2E7"/></Trigger></Style.Triggers></Style>
+<Style x:Key="HeaderIcon" TargetType="Button" BasedOn="{StaticResource Icon}"><Setter Property="Width" Value="28"/><Setter Property="Height" Value="28"/><Setter Property="Padding" Value="4"/><Setter Property="FontSize" Value="13"/><Setter Property="Foreground" Value="#5F6468"/></Style>
+<Style x:Key="Label" TargetType="TextBlock"><Setter Property="FontWeight" Value="Medium"/><Setter Property="FontSize" Value="14"/><Setter Property="Margin" Value="16,22,8,8"/><Setter Property="Foreground" Value="#85898E"/></Style>
+<Style TargetType="TextBox"><Setter Property="BorderThickness" Value="0"/><Setter Property="Foreground" Value="#242628"/><Setter Property="Background" Value="Transparent"/><Setter Property="CaretBrush" Value="Black"/></Style>
+<Style TargetType="ListBox"><Setter Property="BorderThickness" Value="0"/><Setter Property="Background" Value="Transparent"/><Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/></Style>
+<Style TargetType="ListBoxItem"><Setter Property="HorizontalContentAlignment" Value="Stretch"/><Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ListBoxItem"><Border x:Name="item" Padding="9,3" MinHeight="30" Margin="0,0,0,1" CornerRadius="8" Background="Transparent"><ContentPresenter VerticalAlignment="Center"/></Border><ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="item" Property="Background" Value="#F0F2F3"/></Trigger><Trigger Property="IsSelected" Value="True"><Setter TargetName="item" Property="Background" Value="#EDEFF1"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter></Style>
+<Style x:Key="PanelToggleDetail" TargetType="Button"><Setter Property="Width" Value="32"/><Setter Property="Height" Value="32"/><Setter Property="Foreground" Value="#24282B"/><Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button"><Border x:Name="frame" Background="Transparent" BorderBrush="Transparent" BorderThickness="2" CornerRadius="8"><ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="frame" Property="Background" Value="#E5EAED"/></Trigger><Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="frame" Property="BorderBrush" Value="#151719"/><Setter TargetName="frame" Property="Background" Value="#E5EAED"/></Trigger><Trigger Property="IsPressed" Value="True"><Setter TargetName="frame" Property="BorderBrush" Value="#151719"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter></Style>
+<Style x:Key="RoundSend" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Setter Property="Padding" Value="0"/><Setter Property="FontWeight" Value="SemiBold"/><Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button"><Border x:Name="pill" Background="#171A1E" CornerRadius="16"><ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/></Border><ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="pill" Property="Background" Value="#39434A"/></Trigger><Trigger Property="IsEnabled" Value="False"><Setter TargetName="pill" Property="Background" Value="#ACB2B7"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter></Style><Style TargetType="ContextMenu"><Setter Property="FontFamily" Value="Segoe UI Variable Text, Noto Sans KR, Malgun Gothic"/><Setter Property="FontSize" Value="13"/><Setter Property="Background" Value="White"/><Setter Property="HasDropShadow" Value="True"/><Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ContextMenu"><Border Margin="8" Padding="5" CornerRadius="12" Background="White" BorderThickness="1" BorderBrush="#E3E6EA"><Border.Effect><DropShadowEffect BlurRadius="14" ShadowDepth="3" Opacity=".18"/></Border.Effect><ScrollViewer VerticalScrollBarVisibility="Auto"><ItemsPresenter/></ScrollViewer></Border></ControlTemplate></Setter.Value></Setter></Style>
+<Style x:Key="PrefText" TargetType="TextBox">
+  <Setter Property="Padding" Value="10,7"/>
+  <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="TextBox">
+    <Border x:Name="frame" Background="#FAFBFC" BorderBrush="#D7DBDF" BorderThickness="1" CornerRadius="8" Padding="{TemplateBinding Padding}">
+      <ScrollViewer x:Name="PART_ContentHost" HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}" VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}"/>
+    </Border>
+    <ControlTemplate.Triggers>
+      <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="frame" Property="BorderBrush" Value="#B5BCC2"/></Trigger>
+      <Trigger Property="IsKeyboardFocusWithin" Value="True"><Setter TargetName="frame" Property="BorderBrush" Value="#4280B9"/></Trigger>
+    </ControlTemplate.Triggers>
+  </ControlTemplate></Setter.Value></Setter>
+</Style>
+<Style x:Key="PrefCheck" TargetType="CheckBox">
+  <Setter Property="Margin" Value="0,4,0,7"/>
+  <Setter Property="Cursor" Value="Hand"/>
+  <Setter Property="ContentTemplate"><Setter.Value><DataTemplate>
+    <TextBlock Text="{Binding}" TextWrapping="Wrap"/>
+  </DataTemplate></Setter.Value></Setter>
+  <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="CheckBox">
+    <Grid Background="Transparent"><Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition/></Grid.ColumnDefinitions>
+      <Border x:Name="track" Width="32" Height="19" HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="1" BorderBrush="#8E969D" CornerRadius="10" Background="#E4E7EA">
+        <Ellipse x:Name="knob" Fill="White" Width="13" Height="13" Margin="2" HorizontalAlignment="Left"/>
+      </Border>
+      <ContentPresenter Grid.Column="1" VerticalAlignment="Center"/>
+    </Grid>
+    <ControlTemplate.Triggers>
+      <Trigger Property="IsChecked" Value="True"><Setter TargetName="track" Property="Background" Value="#3478BA"/><Setter TargetName="knob" Property="HorizontalAlignment" Value="Right"/></Trigger>
+      <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="track" Property="BorderBrush" Value="#183F69"/></Trigger>
+    </ControlTemplate.Triggers>
+  </ControlTemplate></Setter.Value></Setter>
+</Style>
+<Style x:Key="PrefCombo" TargetType="ComboBox">
+  <Setter Property="MinHeight" Value="34"/>
+  <Setter Property="MaxDropDownHeight" Value="240"/>
+  <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ComboBox">
+    <Grid x:Name="control">
+      <Border x:Name="frame" CornerRadius="8" Background="#FAFBFC" BorderThickness="1" BorderBrush="#D7DBDF"/>
+      <ToggleButton Focusable="False" ClickMode="Press" Cursor="Hand" IsChecked="{Binding IsDropDownOpen,RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}">
+        <ToggleButton.Template><ControlTemplate TargetType="ToggleButton"><Border Background="Transparent">
+          <Path HorizontalAlignment="Right" VerticalAlignment="Center" Margin="12,0" Width="10" Height="10" Data="M1,3 L5,7 L9,3" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Stroke="#586169" StrokeLineJoin="Round"/>
+        </Border></ControlTemplate></ToggleButton.Template>
+      </ToggleButton>
+      <ContentPresenter x:Name="value" Content="{TemplateBinding SelectionBoxItem}" Margin="10,0,30,0" VerticalAlignment="Center" IsHitTestVisible="False"/>
+      <TextBox x:Name="PART_EditableTextBox" Margin="10,1,30,1" Padding="0" VerticalContentAlignment="Center" Visibility="Collapsed" Background="Transparent" BorderThickness="0" Style="{x:Null}">
+        <TextBox.Template><ControlTemplate TargetType="TextBox"><Border Background="Transparent"><ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center"/></Border></ControlTemplate></TextBox.Template>
+      </TextBox>
+      <Popup x:Name="PART_Popup" IsOpen="{TemplateBinding IsDropDownOpen}" PlacementTarget="{Binding ElementName=control}" Placement="Bottom" AllowsTransparency="True" Focusable="False">
+        <Border Background="White" BorderBrush="#D7DBDF" BorderThickness="1" CornerRadius="8" Padding="5" Margin="0,3,0,0" MinWidth="{Binding ActualWidth,ElementName=control}">
+          <ScrollViewer MaxHeight="{TemplateBinding MaxDropDownHeight}" VerticalScrollBarVisibility="Auto" CanContentScroll="True"><ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained"/></ScrollViewer>
+        </Border>
+      </Popup>
+    </Grid>
+    <ControlTemplate.Triggers>
+      <Trigger Property="IsEditable" Value="True"><Setter TargetName="value" Property="Visibility" Value="Collapsed"/><Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible"/></Trigger>
+      <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="frame" Property="BorderBrush" Value="#B5BCC2"/></Trigger>
+      <Trigger Property="IsKeyboardFocusWithin" Value="True"><Setter TargetName="frame" Property="BorderBrush" Value="#4280B9"/></Trigger>
+    </ControlTemplate.Triggers>
+  </ControlTemplate></Setter.Value></Setter>
+</Style>
+<Style x:Key="BrainOption" TargetType="Button">
+  <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+  <Setter Property="Padding" Value="12,8"/>
+  <Setter Property="Margin" Value="0,1"/>
+  <Setter Property="Template"><Setter.Value>
+    <ControlTemplate TargetType="Button">
+      <Border x:Name="Tile" CornerRadius="10" Background="Transparent" BorderThickness="1" BorderBrush="Transparent" Padding="{TemplateBinding Padding}">
+        <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+      </Border>
+      <ControlTemplate.Triggers>
+        <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Tile" Property="Background" Value="#F3F5F6"/></Trigger>
+        <Trigger Property="Tag" Value="selected"><Setter TargetName="Tile" Property="Background" Value="#EAF3F0"/></Trigger>
+        <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="Tile" Property="BorderBrush" Value="#6B9489"/></Trigger>
+        <Trigger Property="IsPressed" Value="True"><Setter TargetName="Tile" Property="Background" Value="#DEEAE6"/></Trigger>
+      </ControlTemplate.Triggers>
+    </ControlTemplate>
+  </Setter.Value></Setter>
+</Style><DataTemplate x:Key="DropdownLabel">
+  <DockPanel LastChildFill="True">
+    <Path DockPanel.Dock="Right" Width="10" Height="10" Margin="6,0,0,0" VerticalAlignment="Center" Data="M1,3 L5,7 L9,3" Stroke="#666D73" StrokeThickness="1.4" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+    <TextBlock VerticalAlignment="Center" TextTrimming="CharacterEllipsis"><Run Text="{Binding Mode=OneWay}"/><Run Text="{Binding Tag, RelativeSource={RelativeSource AncestorType=Button}, Mode=OneWay}" Foreground="#82868A"/></TextBlock>
+  </DockPanel>
+</DataTemplate><Style x:Key="ThreadGlass" TargetType="ContextMenu" BasedOn="{StaticResource {x:Type ContextMenu}}">
+  <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ContextMenu">
+    <Grid Margin="7,6,7,10">
+      <Border CornerRadius="14" Background="#DAFFFDFD"><Border.Effect><DropShadowEffect BlurRadius="13" ShadowDepth="3" Opacity=".15"/></Border.Effect></Border>
+      <Border x:Name="Backdrop" Margin="6" Opacity=".25"><Border.Effect><BlurEffect Radius="10"/></Border.Effect></Border>
+      <Border CornerRadius="14" BorderBrush="#24000000" BorderThickness="1" Padding="5" Background="#64FFFFFF">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"><ItemsPresenter/></ScrollViewer>
+      </Border>
+    </Grid>
+  </ControlTemplate></Setter.Value></Setter>
+</Style></Window.Resources>
+<Grid><Grid.RowDefinitions><RowDefinition Height="42"/><RowDefinition/></Grid.RowDefinitions>
+<DockPanel Grid.Row="0">
+  <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="0,0,0,8" shell:WindowChrome.IsHitTestVisibleInChrome="True">
+    <Button x:Name="Min" Width="46" AutomationProperties.Name="최소화">
+      <Path Data="M0,0.5 H10" Stroke="#242629" StrokeThickness="1"/>
+    </Button>
+    <Button x:Name="Max" Width="46" AutomationProperties.Name="최대화 또는 복원">
+      <Path Stroke="#242629" StrokeThickness="1" SnapsToDevicePixels="True">
+        <Path.Style>
+          <Style TargetType="Path">
+            <Setter Property="Data" Value="M0.5,0.5 H9.5 V9.5 H0.5 Z"/>
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}}" Value="Maximized">
+                <Setter Property="Data" Value="M0.5,3 H7 V9.5 H0.5 Z M3,3 V0.5 H9.5 V7 H7"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </Path.Style>
+      </Path>
+    </Button>
+    <Button x:Name="CloseApp" Width="46" AutomationProperties.Name="닫기">
+      <Path Data="M0.5,0.5 L9.5,9.5 M9.5,0.5 L0.5,9.5" Stroke="#242629" StrokeThickness="1"/>
+    </Button>
+  </StackPanel>
+<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,8" shell:WindowChrome.IsHitTestVisibleInChrome="True">
+<Button x:Name="Back" Foreground="#899096" Style="{StaticResource Icon}" ToolTip="이전 채팅 (Alt+←)" AutomationProperties.Name="이전 채팅"><Path Width="12" Height="12" Stretch="Uniform" Data="M14,8 H2 M7.5,2.5 L2,8 L7.5,13.5" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.1" StrokeLineJoin="Round"/></Button><Button x:Name="Forward" Foreground="#899096" Style="{StaticResource Icon}" ToolTip="다음 채팅 (Alt+→)" AutomationProperties.Name="다음 채팅"><Path Width="12" Height="12" Stretch="Uniform" Data="M2,8 H14 M8.5,2.5 L14,8 L8.5,13.5" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.1" StrokeLineJoin="Round"/></Button><Button x:Name="Sidebar" Foreground="#383C3F" Style="{StaticResource PanelToggleDetail}" ToolTip="사이드바 열기" AutomationProperties.Name="사이드바 전환"><Viewbox Width="15" Height="15" Stretch="Uniform"><Canvas Width="16" Height="16"><Path Data="M4,2.5 H12 Q14.5,2.5 14.5,5 V11 Q14.5,13.5 12,13.5 H4 Q1.5,13.5 1.5,11 V5 Q1.5,2.5 4,2.5 Z M6,3 V13" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.0" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/></Canvas></Viewbox></Button>
+<Menu Margin="5,0,0,0" Background="Transparent" Foreground="#888F95" FontFamily="{Binding FontFamily, RelativeSource={RelativeSource AncestorType=Window}}" FontSize="13" VerticalAlignment="Center"><MenuItem Header="파일" FontSize="13" FontWeight="Normal" Foreground="#888F95" Padding="12,3,9,3"><MenuItem x:Name="MenuNew" Header="새 채팅"/><MenuItem x:Name="MenuFolder" Header="작업공간 열기"/></MenuItem><MenuItem Header="편집" FontSize="13" FontWeight="Normal" Foreground="#888F95" Padding="12,3,10,3"><MenuItem Header="복사" Command="ApplicationCommands.Copy"/><MenuItem Header="붙여넣기" Command="ApplicationCommands.Paste"/></MenuItem><MenuItem Header="보기" FontSize="13" FontWeight="Normal" Foreground="#888F95" Padding="12,3,10,3"><MenuItem x:Name="MenuSide" Header="사이드바 전환"/><MenuItem x:Name="MenuCompact" Header="작은 창"/></MenuItem><MenuItem Header="도움말" FontSize="13" FontWeight="Normal" Foreground="#888F95" Padding="12,3"><MenuItem x:Name="About" Header="모델 및 단축키"/></MenuItem></Menu></StackPanel></DockPanel>
+<Grid Grid.Row="1" x:Name="Workspace"><Grid.ColumnDefinitions><ColumnDefinition Width="50"/><ColumnDefinition Width="290"/><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+<DockPanel x:Name="NavRail" LastChildFill="False" Margin="4,8,4,8" KeyboardNavigation.TabNavigation="Local">
+<StackPanel DockPanel.Dock="Bottom"><Button x:Name="RailDownload" Visibility="Collapsed" Style="{StaticResource NavIcon}" Padding="0" AutomationProperties.Name="모델 내려받기"><Button.ToolTip><ToolTip Style="{StaticResource RailTip}" Content="모델 내려받기"/></Button.ToolTip><Border Width="24" Height="24" CornerRadius="12" Background="#3286E8"><Path Data="M6,1 V11 M2,7 L6,11 L10,7" Stretch="Uniform" Width="10" Height="13" Stroke="White" StrokeThickness="1.4" StrokeLineJoin="Round"/></Border></Button><Button x:Name="RailStatus" Visibility="Collapsed" KeyboardNavigation.TabIndex="7" Style="{StaticResource NavIcon}" AutomationProperties.Name="작업 상태"><Button.ToolTip><ToolTip Style="{StaticResource RailTip}" Content="작업 상태"/></Button.ToolTip><Viewbox Width="24" Height="24"><Canvas Width="16" Height="16"><Path Data="M8,1.4 A6.6,6.6 0 1 1 8,14.6 A6.6,6.6 0 1 1 8,1.4 M8,5 L10.7,8 L8,11 L5.3,8 Z" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.05" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/></Canvas></Viewbox></Button>
+<Button x:Name="RailProfile" KeyboardNavigation.TabIndex="8" Style="{StaticResource NavIcon}" Margin="0" Padding="4" AutomationProperties.Name="프로필"><Button.ToolTip><ToolTip Style="{StaticResource RailTip}" Content="프로필"/></Button.ToolTip><Border Width="24" Height="24" CornerRadius="12" Background="#BA4939"><TextBlock x:Name="ProfileInitials" Text="LG" FontFamily="Segoe UI" FontSize="13" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border></Button></StackPanel>
+<StackPanel DockPanel.Dock="Top"><Button x:Name="Home" KeyboardNavigation.TabIndex="0" Style="{StaticResource NavIcon}" Padding="0" AutomationProperties.Name="채팅 홈"><Button.ToolTip><ToolTip Style="{StaticResource RailTip}" Content="채팅 홈"/></Button.ToolTip><Border Width="36" Height="36" CornerRadius="9" Background="Transparent"><Grid><Path Width="16" Height="16" Stretch="Uniform" Stroke="#65696D" StrokeThickness="1.1" StrokeLineJoin="Round" Data="M1,7 L8,1 L15,7 V14 H10 V10 H6 V14 H1 Z"/><Ellipse Width="8" Height="8" Fill="Black" Visibility="{Binding Visibility,ElementName=ProjectDot}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,3,3,0"/></Grid></Border></Button>
+<Button x:Name="Files" KeyboardNavigation.TabIndex="1" Style="{StaticResource NavIcon}" AutomationProperties.Name="스페이스"><Button.ToolTip><ToolTip Style="{StaticResource RailTip}" Content="스페이스"/></Button.ToolTip><Viewbox Width="18" Height="18"><Canvas Width="16" Height="16"><Path Data="M6,1.6 H12.7 Q13.7,1.6 13.7,2.6 V10.8 Q13.7,11.8 12.7,11.8 H11.4 M3,4.2 H9.4 Q10.5,4.2 10.5,5.3 V13.2 Q10.5,14.2 9.4,14.2 H3 Q2,14.2 2,13.2 V5.3 Q2,4.2 3,4.2 Z" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.05" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/></Canvas></Viewbox></Button>
+<Button x:Name="HistoryIcon" KeyboardNavigation.TabIndex="2" Style="{StaticResource NavIcon}" AutomationProperties.Name="예약"><Button.ToolTip><ToolTip Style="{StaticResource RailTip}" Content="예약"/></Button.ToolTip><Viewbox Width="18" Height="18"><Canvas Width="16" Height="16"><Path Data="M8,1.6 A6.4,6.4 0 1 1 8,14.4 A6.4,6.4 0 1 1 8,1.6 M8,4.1 V8.1 L10.4,9.6" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.05" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/></Canvas></Viewbox></Button>
+<Button x:Name="AgentPicker" KeyboardNavigation.TabIndex="3" Style="{StaticResource NavIcon}" AutomationProperties.Name="플러그인"><Button.ToolTip><ToolTip Style="{StaticResource RailTip}" Content="플러그인"/></Button.ToolTip><ContentControl Template="{StaticResource PluginPlugIcon}" Focusable="False"/></Button>
+<Button x:Name="More" KeyboardNavigation.TabIndex="4" Style="{StaticResource NavIcon}" AutomationProperties.Name="더 보기"><Button.ToolTip><ToolTip Style="{StaticResource RailTip}" Content="더 보기"/></Button.ToolTip><Viewbox Width="18" Height="18"><Canvas Width="16" Height="16"><Path Data="M2,8 A0.65,0.65 0 1 0 3.3,8 A0.65,0.65 0 1 0 2,8 M7.3,8 A0.65,0.65 0 1 0 8.6,8 A0.65,0.65 0 1 0 7.3,8 M12.6,8 A0.65,0.65 0 1 0 13.9,8 A0.65,0.65 0 1 0 12.6,8" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.05" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/></Canvas></Viewbox></Button>
+<Border Margin="10,0,10,8" Height="1" Background="#DCE3E7"/><Button x:Name="Changes" KeyboardNavigation.TabIndex="5" Style="{StaticResource NavIcon}" AutomationProperties.Name="변경 검토"><Button.ToolTip><ToolTip Style="{StaticResource RailTip}" Content="변경 검토"/></Button.ToolTip><Viewbox Width="18" Height="18"><Canvas Width="16" Height="16"><Path Data="M4.6,4.8 V11.3 M4.8,9.6 Q11.9,9.6 11.9,5.3 M4.6,1.4 A1.7,1.7 0 1 1 4.6,4.8 A1.7,1.7 0 1 1 4.6,1.4 M4.6,11.3 A1.7,1.7 0 1 1 4.6,14.7 A1.7,1.7 0 1 1 4.6,11.3 M11.9,1.9 A1.7,1.7 0 1 1 11.9,5.3 A1.7,1.7 0 1 1 11.9,1.9" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.05" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/></Canvas></Viewbox></Button><Button x:Name="AppTools" KeyboardNavigation.TabIndex="6" Style="{StaticResource NavIcon}" AutomationProperties.Name="앱과 도구"><Button.ToolTip><ToolTip Style="{StaticResource RailTip}" Content="앱과 도구"/></Button.ToolTip><Viewbox Width="18" Height="18"><Canvas Width="16" Height="16"><Path Data="M2,3 Q2,2 3,2 H6 Q7,2 7,3 V6 Q7,7 6,7 H3 Q2,7 2,6 Z M9,3 Q9,2 10,2 H13 Q14,2 14,3 V6 Q14,7 13,7 H10 Q9,7 9,6 Z M2,10 Q2,9 3,9 H6 Q7,9 7,10 V13 Q7,14 6,14 H3 Q2,14 2,13 Z M9,10 Q9,9 10,9 H13 Q14,9 14,10 V13 Q14,14 13,14 H10 Q9,14 9,13 Z" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.05" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/></Canvas></Viewbox></Button></StackPanel></DockPanel>
+<Border Grid.Column="1" x:Name="PanelSide" TextElement.FontSize="14" TextElement.Foreground="#3B3D40" BorderBrush="#DDE2E5" BorderThickness="1,1,1,0" CornerRadius="12,0,0,0"><Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="0,1"><GradientStop Color="#F9FBFD" Offset="0"/><GradientStop Color="#FAFBFD" Offset="1"/></LinearGradientBrush></Border.Background><Border.Resources><Style TargetType="ScrollBar">
+  <Setter Property="Width" Value="10"/><Setter Property="Background" Value="Transparent"/>
+  <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ScrollBar">
+    <Grid Background="Transparent"><Track x:Name="PART_Track" Orientation="Vertical" IsDirectionReversed="True">
+      <Track.DecreaseRepeatButton><RepeatButton Command="ScrollBar.PageUpCommand" Opacity="0" Focusable="False"/></Track.DecreaseRepeatButton>
+      <Track.Thumb><Thumb MinHeight="28"><Thumb.Template><ControlTemplate TargetType="Thumb">
+        <Border x:Name="Handle" Width="6" HorizontalAlignment="Right" Margin="0,1,2,1" CornerRadius="3" Background="#E8E9EB"/>
+        <ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Handle" Property="Background" Value="#B9BEC2"/></Trigger><Trigger Property="IsDragging" Value="True"><Setter TargetName="Handle" Property="Background" Value="#92999E"/></Trigger></ControlTemplate.Triggers>
+      </ControlTemplate></Thumb.Template></Thumb></Track.Thumb>
+      <Track.IncreaseRepeatButton><RepeatButton Command="ScrollBar.PageDownCommand" Opacity="0" Focusable="False"/></Track.IncreaseRepeatButton>
+    </Track></Grid>
+  </ControlTemplate></Setter.Value></Setter>
+<Style.Triggers><Trigger Property="IsEnabled" Value="False"><Setter Property="Opacity" Value="0"/></Trigger></Style.Triggers></Style><Style TargetType="ListBox" BasedOn="{StaticResource {x:Type ListBox}}"><Setter Property="Foreground" Value="#3B3D40"/><Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ListBox"><ScrollViewer Background="Transparent" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" CanContentScroll="True"><ItemsPresenter/></ScrollViewer></ControlTemplate></Setter.Value></Setter></Style><Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}"><Setter Property="Foreground" Value="#3B3D40"/></Style></Border.Resources>
+<DockPanel><DockPanel DockPanel.Dock="Top" Margin="8,9"><Button DockPanel.Dock="Right" x:Name="SearchBtn" Style="{StaticResource Icon}" ToolTip="채팅 검색"><Viewbox Width="13" Height="13"><Canvas Width="16" Height="16"><Path Data="M11,10.5 L15,14.5 M12,7 A5,5 0 1 1 2,7 A5,5 0 1 1 12,7" Stroke="#53585D" StrokeThickness="1.15" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/></Canvas></Viewbox></Button><Button DockPanel.Dock="Right" x:Name="Activity" Style="{StaticResource Icon}" ToolTip="작업 상태" AutomationProperties.Name="작업 상태"><Grid Width="18" Height="18"><Viewbox Width="14" Height="14"><Canvas Width="16" Height="16"><Path Data="M2,12 C4,10 3,8 3.5,6 A4.5,4.5 0 0 1 12.5,6 C13,8 12,10 14,12 Z M6,14 Q8,16 10,14" Stroke="#53585D" StrokeThickness="1.15" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/></Canvas></Viewbox><Ellipse x:Name="ActivityDot" Width="6" Height="6" Fill="#3286E8" HorizontalAlignment="Right" VerticalAlignment="Top" Visibility="Collapsed"/></Grid></Button><Button x:Name="Brand" FontFamily="Segoe UI Variable Display, Noto Sans KR" Content="로컬" ContentTemplate="{StaticResource DropdownLabel}" HorizontalAlignment="Left" Padding="9,5" HorizontalContentAlignment="Center" FontSize="17" FontWeight="Medium"/></DockPanel>
+<Button x:Name="NewChat" DockPanel.Dock="Top" Foreground="#494D51" AutomationProperties.Name="새 채팅" HorizontalContentAlignment="Left" Margin="5,0,8,2"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="26"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><Viewbox Width="14" Height="14" HorizontalAlignment="Left"><Canvas Width="16" Height="16"><Path Data="M7.2,3.2 H3.5 A1.5,1.5 0 0 0 2,4.7 V12.2 A1.5,1.5 0 0 0 3.5,13.7 H11 A1.5,1.5 0 0 0 12.5,12.2 V9 M6,9.9 L6.5,7.5 L12.3,1.9 L14.1,3.7 L8.3,9.4 Z" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/></Canvas></Viewbox><TextBlock Grid.Column="1" Text="새 채팅" VerticalAlignment="Center"/></Grid></Button>
+<Button x:Name="MyDot" Visibility="Collapsed" DockPanel.Dock="Top" Foreground="#494D51" AutomationProperties.Name="내 dot" HorizontalContentAlignment="Left" Margin="5,0,8,2"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="26"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><Viewbox Width="14" Height="14"><Canvas Width="16" Height="16"><Path Data="M3,3 C6,0 16,10 13,13 C10,16 0,6 3,3 Z M13,3 C16,6 6,16 3,13 C0,10 10,0 13,3 Z" Stroke="#53585D" StrokeThickness="1.15" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/></Canvas></Viewbox><TextBlock Grid.Column="1" Text="내 dot" VerticalAlignment="Center"/></Grid></Button>
+<TextBox DockPanel.Dock="Top" x:Name="Search" Visibility="Collapsed" AutomationProperties.Name="채팅 검색" Margin="15,6" Background="#ECEFF2" Padding="8"/>
+<TextBlock DockPanel.Dock="Top" x:Name="PinHeading" Style="{StaticResource Label}" Text="고정된 스레드"/><ListBox DockPanel.Dock="Top" x:Name="Pinned" Margin="7,0" MaxHeight="140"/>
+<StackPanel DockPanel.Dock="Top"><DockPanel Margin="8,10,8,2"><Button x:Name="AddProjectFolder" DockPanel.Dock="Right" Content="＋" ToolTip="프로젝트 추가"/><Button x:Name="ProjectOptions" DockPanel.Dock="Right" Content="⋯" ToolTip="프로젝트 옵션"/><Button x:Name="Project" HorizontalContentAlignment="Left" Foreground="#707579"/></DockPanel><ScrollViewer MaxHeight="310" VerticalScrollBarVisibility="Auto"><StackPanel x:Name="ProjectRows"/></ScrollViewer><Ellipse x:Name="ProjectDot" Width="0" Height="0" Visibility="Collapsed"/></StackPanel>
+<TextBlock DockPanel.Dock="Top" x:Name="ListHeading" Style="{StaticResource Label}" Text="최근"/><TextBlock DockPanel.Dock="Top" x:Name="EmptyHistory" Margin="16,5,8,0" Foreground="#76797B" Visibility="Collapsed"/><ListBox x:Name="Chats" Margin="7,0,1,5"/></DockPanel></Border>
+<Border Grid.Column="2" Background="White" CornerRadius="12" Margin="0,0,4,4"><Grid><Grid.RowDefinitions><RowDefinition Height="54"/><RowDefinition/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+<DockPanel Margin="8,0"><Button DockPanel.Dock="Right" x:Name="Details" Style="{StaticResource HeaderIcon}" ToolTip="사이드 패널" AutomationProperties.Name="사이드 패널"><Viewbox Width="14" Height="14" Stretch="Uniform"><Canvas Width="16" Height="16"><Path Data="M3,2.5 H13 A1,1 0 0 1 14,3.5 V12.5 A1,1 0 0 1 13,13.5 H3 A1,1 0 0 1 2,12.5 V3.5 A1,1 0 0 1 3,2.5 Z M10,3 V13" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.35" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/></Canvas></Viewbox></Button><Button DockPanel.Dock="Right" x:Name="Options" Style="{StaticResource HeaderIcon}" ToolTip="창 설정" AutomationProperties.Name="창 설정"><Viewbox Width="14" Height="14" Stretch="Uniform"><Canvas Width="16" Height="16"><Path Data="M1.5,4 H7 M11,4 H14.5 M9,2 A2,2 0 1 1 9,6 A2,2 0 1 1 9,2 M1.5,11.5 H4 M8,11.5 H14.5 M6,9.5 A2,2 0 1 1 6,13.5 A2,2 0 1 1 6,9.5" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.35" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/></Canvas></Viewbox></Button><Button DockPanel.Dock="Right" x:Name="ThreadMore" Style="{StaticResource HeaderIcon}" Content="&#xE712;" ToolTip="채팅 메뉴"/><Button DockPanel.Dock="Left" x:Name="HeadNew" Visibility="Collapsed" Style="{StaticResource HeaderIcon}" ToolTip="새 채팅 (Ctrl+N)" AutomationProperties.Name="새 채팅"><Viewbox Width="14" Height="14" Stretch="Uniform"><Canvas Width="16" Height="16"><Path Data="M7.2,3.2 H3.5 A1.5,1.5 0 0 0 2,4.7 V12.2 A1.5,1.5 0 0 0 3.5,13.7 H11 A1.5,1.5 0 0 0 12.5,12.2 V9 M6,9.9 L6.5,7.5 L12.3,1.9 L14.1,3.7 L8.3,9.4 Z" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.35" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/></Canvas></Viewbox></Button><Button DockPanel.Dock="Left" x:Name="HeadFolder" Margin="3,0" Style="{StaticResource HeaderIcon}" ToolTip="작업공간" AutomationProperties.Name="작업공간"><Viewbox Width="14" Height="14" Stretch="Uniform"><Canvas Width="16" Height="16"><Path Data="M1.5,4 A1,1 0 0 1 2.5,3 H6 L7.6,4.8 H13.5 A1,1 0 0 1 14.5,5.8 V12 A1,1 0 0 1 13.5,13 H2.5 A1,1 0 0 1 1.5,12 Z" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.35" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/></Canvas></Viewbox></Button><TextBlock x:Name="ThreadTitle" Foreground="#33363A" Margin="6,0,0,0" Text="새 채팅" FontSize="15" FontWeight="Medium" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/></DockPanel>
+<DockPanel Grid.Row="1" Grid.RowSpan="2" ClipToBounds="True"><Border x:Name="FindBar" Visibility="Collapsed" DockPanel.Dock="Top" Margin="12,1,12,5" Padding="8,3,3,3" Background="#F7F8F9" BorderThickness="1" BorderBrush="#E4E7E9" CornerRadius="9" HorizontalAlignment="Right"><StackPanel Orientation="Horizontal">
+<TextBox x:Name="FindQuery" Width="140" VerticalContentAlignment="Center" AutomationProperties.Name="이 대화에서 찾기" ToolTip="이 대화에서 찾기"/><TextBlock x:Name="FindCount" MinWidth="48" VerticalAlignment="Center" TextAlignment="Center" FontSize="13" Foreground="#62666C"/><Button x:Name="FindPrevious" Style="{StaticResource HeaderIcon}" Content="&#xE70E;" ToolTip="이전 결과 (Shift+Enter)" AutomationProperties.Name="이전 결과"/><Button x:Name="FindNext" Style="{StaticResource HeaderIcon}" Content="&#xE70D;" ToolTip="다음 결과 (Enter)" AutomationProperties.Name="다음 결과"/><Button x:Name="CloseFind" Style="{StaticResource HeaderIcon}" Content="&#xE711;" ToolTip="찾기 닫기 (Esc)" AutomationProperties.Name="찾기 닫기"/>
+</StackPanel></Border><Grid>
+<StackPanel x:Name="HomeView" Panel.ZIndex="1" Visibility="{Binding Visibility,ElementName=Welcome}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="16,0,16,0">
+  <Viewbox Width="52" Height="52" HorizontalAlignment="Center" Margin="0,0,0,27" IsHitTestVisible="False"><Canvas Width="48" Height="48"><Path Data="M15,38 C8,38 4,33 5.3,26.5 C1.5,19 5.2,14.5 10.6,12.3 C11,5.6 18,2.3 24,6.4 C32,3.5 38.8,8.3 39.9,15 C46,18.4 47,25 42.8,30.6 C43,38 36.6,43.5 29.6,41 C24,44.3 17,43.5 15,38 Z M16,19 L20.5,23.5 L16,28 M24,28 H30.3" Stroke="#BFC1C3" StrokeThickness="2.5" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/></Canvas></Viewbox>
+  <TextBlock x:Name="Welcome" FontSize="28" LineHeight="36" FontWeight="Normal" Foreground="#1A1C1F" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center"><Run Text="무엇을 만들까요?"/></TextBlock>
+</StackPanel>
+<ScrollViewer x:Name="Scroller" Margin="0,0,10,0" VerticalScrollBarVisibility="Hidden"><StackPanel><StackPanel x:Name="Messages" MaxWidth="737" Margin="34,16,24,45"/><Border Height="{Binding ActualHeight,ElementName=ComposerHost}" IsHitTestVisible="False"/></StackPanel></ScrollViewer><ScrollViewer x:Name="TurnRail" Visibility="Collapsed" HorizontalAlignment="Left" VerticalAlignment="Center" Width="36" Margin="0,4" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden"><StackPanel x:Name="TurnMarks"/></ScrollViewer></Grid></DockPanel>
+<Button x:Name="JumpLatest" Grid.Row="2" Panel.ZIndex="3" Content="↓" AutomationProperties.Name="최신 메시지로 이동" ToolTip="최신 메시지로 이동" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,-40,0,0" Width="32" Height="32" Padding="0" FontSize="18" Visibility="Collapsed"><Button.Template><ControlTemplate TargetType="Button"><Border Background="White" BorderBrush="#DADDE0" BorderThickness="1" CornerRadius="16"><ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/></Border></ControlTemplate></Button.Template></Button><Grid Grid.Row="2" Margin="0,-72,0,0" IsHitTestVisible="False"><Grid.RowDefinitions><RowDefinition Height="72"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions><Border Grid.RowSpan="2"><Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="0,1"><GradientStop Color="#00FFFFFF" Offset="0"/><GradientStop Color="#FFFFFFFF" Offset="1"/></LinearGradientBrush></Border.Background></Border><Border Grid.Row="1" Height="{Binding ActualHeight,ElementName=Status}" Margin="0,0,0,8" Visibility="{Binding Visibility,ElementName=Status}"/><Border Grid.Row="2" Background="White"/></Grid><Grid x:Name="ComposerHost" Grid.Row="2" Panel.ZIndex="2" Background="{x:Null}" Margin="24,0,24,15"><StackPanel MaxWidth="737">
+<Button x:Name="ChangeChip" Visibility="Collapsed" HorizontalAlignment="Center" Margin="0,0,0,6" Background="#F4F5F5"/>
+<StackPanel x:Name="AskPanel" Visibility="Collapsed"/><StackPanel x:Name="QueuePanel" Visibility="Collapsed"/><WrapPanel x:Name="AttachList" Visibility="Collapsed" Margin="4,0,0,2"/><Button x:Name="RemoveAttachment" HorizontalAlignment="Left" Visibility="Collapsed" Background="#EDF1F4" ToolTip="첨부 제거" Margin="4,0,0,4"/><TextBlock x:Name="Status" Panel.ZIndex="1" Foreground="#76797B" TextWrapping="Wrap" Margin="4,0,4,8" FontSize="13"><TextBlock.Style><Style TargetType="TextBlock"><Style.Triggers><Trigger Property="Text" Value=""><Setter Property="Visibility" Value="Collapsed"/></Trigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
+<Border x:Name="HomeContext" Visibility="{Binding Visibility,ElementName=Welcome}" Margin="12,0,12,-7" Padding="8,6,8,11" Background="#F5F5F5" CornerRadius="15,15,0,0"><StackPanel Orientation="Horizontal">
+  <Button x:Name="HomeProject" ToolTip="작업할 프로젝트 선택" Padding="8,5" AutomationProperties.Name="작업할 프로젝트 선택"><StackPanel Orientation="Horizontal"><Path Width="14" Height="13" Stretch="Uniform" Data="M1,4 V2.8 A1,1 0 0 1 2,1.8 H6 L8,4 H13.5 A1,1 0 0 1 14.5,5 V12.3 A1,1 0 0 1 13.5,13.3 H2 A1,1 0 0 1 1,12.3 Z M1.5,6 H14" Stroke="#454545" StrokeThickness="1.3" Margin="0,0,6,0"/><TextBlock x:Name="HomeProjectName" MaxWidth="230" TextTrimming="CharacterEllipsis" FontSize="14" Foreground="#3C3C3C" VerticalAlignment="Center"/></StackPanel></Button>
+  <StackPanel Orientation="Horizontal" Margin="12,0,0,0" VerticalAlignment="Center" ToolTip="이 PC에서 실행"><Path Width="14" Height="13" Stretch="Uniform" Data="M2.5,10 V3.5 Q2.5,2.5 3.5,2.5 H12.5 Q13.5,2.5 13.5,3.5 V10 Z M1,11 H15 L14,12.6 H2 Z" Stroke="#454545" StrokeThickness="1.3" Margin="0,0,6,0"/><TextBlock FontSize="14" Foreground="#3C3C3C" Text="이 컴퓨터"/></StackPanel>
+</StackPanel></Border>
+<Grid><Border Background="White" CornerRadius="22" IsHitTestVisible="False"><Border.Effect><DropShadowEffect Color="#334559" BlurRadius="12" ShadowDepth="2" Opacity=".09"/></Border.Effect></Border>
+<Border x:Name="ComposerFrame" Padding="12,10,8,8" Background="White" BorderBrush="#E2E5E8" BorderThickness="1" CornerRadius="22"><StackPanel>
+<DockPanel x:Name="VoiceBar" Visibility="Collapsed"><Button x:Name="VoiceCancel" DockPanel.Dock="Left" Content="×" ToolTip="녹음 취소"/><Button x:Name="VoiceSubmit" DockPanel.Dock="Right" Content="↑" ToolTip="인식 후 보내기"/><Button x:Name="VoiceStop" DockPanel.Dock="Right" Content="■" ToolTip="입력창에 받아쓰기"/><TextBlock x:Name="VoiceState" Text="●  녹음 중" HorizontalAlignment="Center" VerticalAlignment="Center"/></DockPanel><Grid x:Name="TextEntry"><TextBox x:Name="Input" FontSize="14" AutomationProperties.Name="메시지" AcceptsReturn="True" TextWrapping="Wrap" MaxHeight="120" MinHeight="40" Margin="0,0,0,6" Padding="0,4" VerticalScrollBarVisibility="Auto"/><TextBlock x:Name="Placeholder" FontSize="14" IsHitTestVisible="False" Text="무엇이든 요청하세요" Margin="0,4" Foreground="#C8C8C8"/></Grid>
+<Grid x:Name="ComposerTools">
+<Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+<StackPanel Orientation="Horizontal"><Button x:Name="Attach" Content="＋" Width="28" Height="28" Padding="0" FontSize="18" ToolTip="파일과 도구 추가" AutomationProperties.Name="파일과 도구 추가"/><Button x:Name="Access" Content="작업공간" Margin="0" VerticalAlignment="Center" FontSize="12" Foreground="#E65E19"><Button.ContentTemplate><DataTemplate><StackPanel Orientation="Horizontal"><Viewbox Width="14" Height="14" Margin="0,0,5,0"><Canvas Width="16" Height="16"><Path Data="M8,0.9 L14.1,3.8 V10.6 L11.3,14.7 H4.8 L1.9,11 V4.3 Z M8,5 V8.8" Stroke="#E66A26" StrokeThickness="1.5" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/><Ellipse Canvas.Left="7.1" Canvas.Top="10.5" Width="1.8" Height="1.8" Fill="#E66A26"/></Canvas></Viewbox><TextBlock Text="{Binding}" Visibility="{Binding Tag, RelativeSource={RelativeSource AncestorType=Button}, TargetNullValue=Visible}"/></StackPanel></DataTemplate></Button.ContentTemplate></Button></StackPanel>
+<StackPanel x:Name="ComposerRight" UseLayoutRounding="True" SnapsToDevicePixels="True" VerticalAlignment="Center" Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
+<Path x:Name="ModelActivity" VerticalAlignment="Center" Width="12" Height="12" Stretch="Uniform" Data="M6,1 A5,5 0 1 1 1,6" Stroke="#83898D" StrokeThickness="1.5" Margin="0,0,3,0" Visibility="Collapsed" RenderTransformOrigin=".5,.5" ToolTip="로컬 모델 작업 중" AutomationProperties.Name="로컬 모델 작업 중"><Path.RenderTransform><RotateTransform/></Path.RenderTransform></Path>
+<Grid x:Name="ContextUsage" Width="24" Height="24" Margin="0" VerticalAlignment="Center" Visibility="Collapsed" Background="Transparent" Cursor="Hand" Focusable="True" ToolTipService.InitialShowDelay="150" AutomationProperties.Name="컨텍스트 사용량"><Ellipse x:Name="ContextHover" Width="24" Height="24" Fill="Transparent"/><Grid Width="16" Height="16" IsHitTestVisible="False"><Ellipse Width="13" Height="13" Stroke="#E2E5E8" StrokeThickness="2"/><Path x:Name="ContextRing" Stroke="#83898D" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/></Grid></Grid>
+<Button x:Name="Model" Content="자동" ContentTemplate="{StaticResource DropdownLabel}" FontSize="12" Height="28" Padding="4,0" MaxWidth="190" ToolTip="사용할 모델 선택" Foreground="#404348" Margin="0,0,4,0" VerticalAlignment="Center"/>
+<Button x:Name="Mic" Width="28" Height="28" Padding="0" VerticalAlignment="Center" Margin="0,0,8,0" Style="{StaticResource Icon}" AutomationProperties.Name="음성 입력" ToolTip="한국어 음성 입력"><Viewbox Width="16" Height="16"><Canvas Width="16" Height="16"><Path Data="M4.9,4.8 A3.1,3.1 0 0 1 11.1,4.8 V7.1 A3.1,3.1 0 0 1 4.9,7.1 Z M2.4,9.3 Q3.7,13 8,13 Q12.3,13 13.6,9.3 M8,13 V15" Stroke="#242528" StrokeThickness="1.45" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/></Canvas></Viewbox></Button>
+<Button x:Name="QueueSend" Visibility="Collapsed" Width="28" Height="28" Padding="0" Margin="0,0,4,0" Content="↑" FontSize="17" ToolTip="대기열에 추가 (Enter) · 지금 보내기 (Ctrl+Enter)" AutomationProperties.Name="대기열에 추가"/>
+<Button x:Name="Send" Style="{StaticResource RoundSend}" Background="Black" Foreground="White" Content="↑" Width="28" Height="28" FontSize="17" AutomationProperties.Name="보내기"/></StackPanel></Grid></StackPanel></Border>
+</Grid></StackPanel></Grid><ScrollBar x:Name="ChatScrollBar" Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="0,0,0,1" Orientation="Vertical" Maximum="{Binding ScrollableHeight,ElementName=Scroller}" ViewportSize="{Binding ViewportHeight,ElementName=Scroller}" Value="{Binding VerticalOffset,ElementName=Scroller,Mode=OneWay}" SmallChange="16" LargeChange="{Binding ViewportHeight,ElementName=Scroller}"><ScrollBar.Style><Style TargetType="ScrollBar">
+  <Setter Property="Width" Value="10"/><Setter Property="Background" Value="Transparent"/>
+  <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ScrollBar">
+    <Grid Background="Transparent"><Grid.RowDefinitions><RowDefinition/><RowDefinition Height="10"/></Grid.RowDefinitions><Track x:Name="PART_Track" Orientation="Vertical" IsDirectionReversed="True">
+      <Track.DecreaseRepeatButton><RepeatButton Command="ScrollBar.PageUpCommand" Opacity="0" Focusable="False"/></Track.DecreaseRepeatButton>
+      <Track.Thumb><Thumb MinHeight="28"><Thumb.Template><ControlTemplate TargetType="Thumb">
+        <Border x:Name="Handle" Width="5" HorizontalAlignment="Right" Margin="0,1,2,1" CornerRadius="2.5" Background="#E7E8E9"/>
+        <ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Handle" Property="Background" Value="#B9BEC2"/></Trigger><Trigger Property="IsDragging" Value="True"><Setter TargetName="Handle" Property="Background" Value="#92999E"/></Trigger></ControlTemplate.Triggers>
+      </ControlTemplate></Thumb.Template></Thumb></Track.Thumb>
+      <Track.IncreaseRepeatButton><RepeatButton Command="ScrollBar.PageDownCommand" Opacity="0" Focusable="False"/></Track.IncreaseRepeatButton>
+    </Track><RepeatButton Grid.Row="1" Focusable="False" Command="ScrollBar.LineDownCommand" AutomationProperties.Name="한 줄 아래로"><RepeatButton.Template><ControlTemplate TargetType="RepeatButton"><Grid Background="Transparent"><Path Width="6" Height="4" Fill="#C8C9CA" Stretch="Fill" Data="M0,0 L6,0 L3,4 Z"/></Grid></ControlTemplate></RepeatButton.Template></RepeatButton></Grid>
+  </ControlTemplate></Setter.Value></Setter>
+<Style.Triggers><Trigger Property="Maximum" Value="0"><Setter Property="Visibility" Value="Collapsed"/></Trigger><Trigger Property="IsEnabled" Value="False"><Setter Property="Opacity" Value="0"/></Trigger></Style.Triggers></Style></ScrollBar.Style></ScrollBar></Grid></Border>
+<Border x:Name="InfoPane" Grid.Column="3" Panel.ZIndex="2" Width="252" HorizontalAlignment="Right" Visibility="Collapsed" Margin="0,0,4,4" Background="White" BorderBrush="#E6E8EB" BorderThickness="1" CornerRadius="12" Padding="14">
+<DockPanel><DockPanel DockPanel.Dock="Top" Margin="0,0,0,20"><Button x:Name="CloseInfo" DockPanel.Dock="Right" Style="{StaticResource HeaderIcon}" Content="&#xE711;" ToolTip="닫기" AutomationProperties.Name="대화 정보 닫기"/><TextBlock Text="대화 정보" VerticalAlignment="Center" FontWeight="SemiBold"/></DockPanel>
+<ScrollViewer VerticalScrollBarVisibility="Auto"><StackPanel>
+<TextBlock Text="{Binding Text, ElementName=ThreadTitle}" FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap"/>
+<TextBlock Text="모델" Margin="0,20,0,4" Foreground="#707478"/><TextBlock Text="{Binding Content, ElementName=Model}" TextWrapping="Wrap"/>
+<TextBlock Text="프로젝트" Margin="0,20,0,4" Foreground="#707478"/><TextBlock x:Name="InfoProject" TextWrapping="Wrap"/>
+<Button x:Name="InfoChanges" Content="작업 결과 보기" Visibility="{Binding Visibility, ElementName=ChangeChip}" Margin="0,18,0,0" HorizontalAlignment="Left"/>
+</StackPanel></ScrollViewer></DockPanel></Border></Grid></Grid></Window>
+
+

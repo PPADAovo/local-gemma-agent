@@ -1,0 +1,7 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs/promises';import path from 'node:path';import os from 'node:os';import {pathToFileURL} from 'node:url';import {createHash} from 'node:crypto';
+test('trusted undo manifest records version, run identity, poststate and backup hashes',async()=>{
+ const dir=await fs.mkdtemp(path.join(os.tmpdir(),'gemma-changes-test-'));
+ try{await fs.copyFile(new URL('../changes.mjs',import.meta.url),path.join(dir,'changes.mjs'));const changes=await import(pathToFileURL(path.join(dir,'changes.mjs')));const file=path.join(dir,'a.txt');await fs.writeFile(file,'before');await changes.before(file);await fs.writeFile(file,'after');const receipt=await changes.after(file);const manifest=receipt.match(/\[\[UNDO:(.*?)\]\]/)[1];const data=JSON.parse(await fs.readFile(manifest,'utf8'));
+ assert.equal(data.version,2);assert.equal(data.runId,path.basename(path.dirname(manifest)));assert.equal(data.files[0].afterSha256,createHash('sha256').update('after').digest('hex'));assert.equal(data.files[0].backupSha256,createHash('sha256').update('before').digest('hex'));assert.equal(changes.manifest(),manifest);await fs.unlink(file);await changes.after(file);assert.equal(JSON.parse(await fs.readFile(manifest,'utf8')).files[0].afterSha256,null);
+ }finally{assert.equal(path.dirname(dir),os.tmpdir().replace(/[\\/]$/,''));await fs.rm(dir,{recursive:true,force:true});}
+});

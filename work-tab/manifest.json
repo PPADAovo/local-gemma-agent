@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "로컬 Gemma 작업 탭",
+  "version": "1.2.0",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA04AGgwx5XKETpiOVWkFTGr2rAHZ3Qp3/DtNbngN6zTnEffNtednmvyOXaB0pE+UCNiOPrn9yLx6JbkQer6rImAKkgl8KZbechVBvV0ODIEeZShs4ojbMh8QbYchLdGiiwnZ0nv3FEI1vw3ObjvTcpp8sqtr+WkNgqpyR8yzKKqi4DMfaV25BPk6ZwbBC/6F1lg9ZAuzfR76xQLTKw5rVPCyafFfFIopyqJjaPcI4KG8oZfsQ8UaMGvkojDMu58cemnV6mqAy0VK/fLr7jcBWRujxAw8SQtGePWtTayZHvEB7ozA8ZEZiypYIVDr1RKdH6mI9k/A8AsI8k2GjmfN89QIDAQAB",
+  "description": "별도 작업 창에서 Gemma가 만든 탭만 제어합니다.",
+  "permissions": [
+    "debugger",
+    "nativeMessaging",
+    "tabGroups",
+    "alarms",
+    "system.display"
+  ],
+  "action": {
+    "default_title": "Gemma 작업 탭 연결"
+  },
+  "background": {
+    "service_worker": "worker.js"
+  }
+}

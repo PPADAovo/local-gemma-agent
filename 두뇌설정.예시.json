@@ -1,0 +1,8 @@
+{
+  "설명": "이 파일을 '두뇌설정.json'으로 복사한 뒤 key 칸에 직접 키를 붙여 넣으세요. 키가 비어 있는 서비스는 건너뜁니다. 앞에 있는 모델부터 시도합니다(정확도 우선).",
+  "order": ["gemini", "claude", "gpt"],
+  "gemini": {"key": "", "models": ["gemini-pro-latest", "gemini-flash-latest"]},
+  "claude": {"key": "", "models": ["claude-sonnet-5-5", "claude-haiku-5-5"]},
+  "gpt":    {"key": "", "models": ["gpt-5", "gpt-5-mini"]},
+  "timeoutSec": 300
+}
